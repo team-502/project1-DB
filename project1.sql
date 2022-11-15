@@ -4,143 +4,155 @@ use PhanMem_BanGiay_Limited
 GO
 
 -- Sản Phẩm
-create table SanPham(
-Id UNIQUEIDENTIFIER Primary KEY DEFAULT NEWID(),
-Ma VARCHAR(20) UNIQUE,
-Ten NVARCHAR(100)
+CREATE TABLE Product(
+    Id UNIQUEIDENTIFIER Primary KEY DEFAULT NEWID(),
+    id_product VARCHAR(20) UNIQUE,
+    _name NVARCHAR(100)
 )
 
 -- Màu Sắc
-create table MauSac(
+CREATE TABLE Color(
     Id UNIQUEIDENTIFIER primary key DEFAULT newid(),
-    Ma VARCHAR(20) UNIQUE,
-    Ten NVARCHAR(20)
+    id_color VARCHAR(20) UNIQUE,
+    _name NVARCHAR(20)
 )
 
 -- Chất Liệu
-create table DongSP(
+CREATE TABLE ProductLine(
     Id UNIQUEIDENTIFIER primary key DEFAULT newid(),
-    Ma varchar(20) UNIQUE,
-    Ten NVARCHAR(50)
+    id_product_line varchar(20) UNIQUE,
+    _name NVARCHAR(50)
 ) 
 
 -- Nhà Sản Xuất (Hãng)
-create table NSX(
+CREATE TABLE producer(
     Id UNIQUEIDENTIFIER primary key DEFAULT newId(),
-    Ma VARCHAR(20) UNIQUE,
-    Ten NVARCHAR(100)
+    id_producer VARCHAR(20) UNIQUE,
+    _name NVARCHAR(100)
 )
 
 -- Sản Phẩm Chi Tiết
-create table ChiTietSanPham(
-Id UNIQUEIDENTIFIER primary key default newid(),
-IdSP UNIQUEIDENTIFIER,
-IdMauSac UNIQUEIDENTIFIER,
-IdDongSP UNIQUEIDENTIFIER,
-IdNSX UNIQUEIDENTIFIER,
-XuatXu NVARCHAR(50) DEFAULT null,
-Size int,
-SoLg int,
---vitri,
-MoTa NVARCHAR(100) DEFAULT null,
-NgayN date DEFAULT null,
-GiaN DECIMAL(20,0) default 0,
-GiaB Decimal(20,0) DEFAULT 0
+CREATE TABLE ProductDetail(
+    Id UNIQUEIDENTIFIER primary key default newid(),
+    product UNIQUEIDENTIFIER,
+    color UNIQUEIDENTIFIER,
+    product_line UNIQUEIDENTIFIER,
+    producer UNIQUEIDENTIFIER,
+    -- XuatXu NVARCHAR(50) DEFAULT null,
+    Size int,
+    quantity int,
+    --vitri,
+    decription NVARCHAR(100),
+    -- NgayN date DEFAULT null,
+    import_price DECIMAL(20,0),
+    export_price Decimal(20,0)
 )
 
 -- Hoá Đơn
-create table HoaDon(
-    Id UNIQUEIDENTIFIER primary key DEFAULT newid(),
-    IdKh UNIQUEIDENTIFIER,
-    IdNv UNIQUEIDENTIFIER,
-    Ma varchar(20) UNIQUE,
-    NgayTao date DEFAULT null,
-    NgayThanhToan date DEFAULT null,
-    NgayShip date DEFAULT null,
-    NgayNhan date DEFAULT null,
-    TinhTrang int DEFAULT 0,
-    TenNguoiNhan NVARCHAR(100) DEFAULT null,
-    DiaChi NVARCHAR(100) DEFAULT null,
-    Sdt NVARCHAR(100) DEFAULT null,
+CREATE TABLE Invoice(
+    id UNIQUEIDENTIFIER primary key DEFAULT newid(),
+    customer UNIQUEIDENTIFIER NOT NULL,
+    staff UNIQUEIDENTIFIER NOT NULL,
+    -- invoice varchar(20) UNIQUE,
+    created_date date NOT NULL,
+    payment_date date NOT NULL,
+    delivery_date date NOT NULL,
+    received_date date NOT NULL,
+    _state int NOT NULL,
+    recipiment_name NVARCHAR(100) NOT NULL,
+    _address NVARCHAR(100) NOT NULL,
+    phone_number NVARCHAR(100) NOT NULL,
 )
 
 -- Hoá Đơn Chi tiêt
-Create table HoaDonChitiet(
-    IdHoaDon UNIQUEIDENTIFIER,
-    IdChiTietSanPham UNIQUEIDENTIFIER,
-    SoLg int,
-    CONSTRAINT PK_HoaDonCT primary key (IdHoaDon, IdChiTietSanPham),
-    CONSTRAINT FK1 FOREIGN key (IdHoaDon) REFERENCES HoaDon(Id),
-    CONSTRAINT FK2 FOREIGN KEY (IdChiTietSanPham) REFERENCES ChiTietSanPham(Id),
-    )
+CREATE TABLE InvoiceDetail(
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    invoice UNIQUEIDENTIFIER NOT NULL,
+    product_detail UNIQUEIDENTIFIER NOT NULL,
+    quantity int NOT NULL,
+    -- CONSTRAINT PK_HoaDonCT primary key (IdHoaDon, IdChiTietSanPham),
+    CONSTRAINT FK1 FOREIGN key (invoice) REFERENCES Invoice(id),
+    CONSTRAINT FK2 FOREIGN KEY (product_detail) REFERENCES ProductDetail(id),
+)
 
 -- Giỏ Hàng
-CREATE TABLE GioHang(
-Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-IdKH UNIQUEIDENTIFIER,
-IdNV UNIQUEIDENTIFIER,
-Ma VARCHAR(20) UNIQUE,
-NgayTao DATE DEFAULT NULL,
-NgayThanhToan DATE DEFAULT NULL,
-TenNguoiNhan NVARCHAR(50) DEFAULT NULL,
-DiaChi NVARCHAR(100) DEFAULT NULL,
-Sdt VARCHAR(30) DEFAULT NULL,
-TinhTrang INT DEFAULT 0
-)
+-- CREATE TABLE GioHang(
+--     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+--     IdKH UNIQUEIDENTIFIER,
+--     IdNV UNIQUEIDENTIFIER,
+--     Ma VARCHAR(20) UNIQUE,
+--     NgayTao DATE DEFAULT NULL,
+--     NgayThanhToan DATE DEFAULT NULL,
+--     TenNguoiNhan NVARCHAR(50) DEFAULT NULL,
+--     DiaChi NVARCHAR(100) DEFAULT NULL,
+--     Sdt VARCHAR(30) DEFAULT NULL,
+--     TinhTrang INT DEFAULT 0
+-- )
 -- Giỏ Hàng Chi TiếtTiếtt
-CREATE TABLE GioHangChiTiet(
-IdGioHang UNIQUEIDENTIFIER,
-IdChiTietSanPham UNIQUEIDENTIFIER,
-SoLuong INT,
-DonGia DECIMAL(20,0) DEFAULT 0,
-DonGiaKhiGiam DECIMAL(20,0) DEFAULT 0,
-CONSTRAINT PK_GioHangCT PRIMARY KEY (IdGioHang,IdChiTietSanPham),
-CONSTRAINT FK1_IdGioHang FOREIGN KEY(IdGioHang) REFERENCES GioHang(Id),
-CONSTRAINT FK2_IdChiTietSanPham FOREIGN KEY(IdChiTietSanPham) REFERENCES ChiTietSanPham(Id),
-)
+-- CREATE TABLE GioHangChiTiet(
+--     IdGioHang UNIQUEIDENTIFIER,
+--     IdChiTietSanPham UNIQUEIDENTIFIER,
+--     SoLuong INT,
+--     DonGia DECIMAL(20,0) DEFAULT 0,
+--     DonGiaKhiGiam DECIMAL(20,0) DEFAULT 0,
+-- )
 -- Khách Hàng
-create table KhachHang(
-    Id UNIQUEIDENTIFIER primary key DEFAULT newid(),
-    Ma VARCHAR(20) UNIQUE,
-    HoTen NVARCHAR(100) DEFAULT null,
-    Email NVARCHAR(100) DEFAULT null,
-    Sdt VARCHAR(100) DEFAULT null,
-    DiaChi NVARCHAR(100) DEFAULT null,
-    QuocGia NVARCHAR(100) DEFAULT null,
+CREATE TABLE Customer(
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT newid(),
+    id_customer VARCHAR(20) UNIQUE,
+    full_name NVARCHAR(100) DEFAULT null,
+    email NVARCHAR(100) DEFAULT null,
+    phone_number VARCHAR(100) DEFAULT null,
+    _address NVARCHAR(100) DEFAULT null,
+    country NVARCHAR(100) DEFAULT null,
 )
 
 -- Nhân Viên 
-Create table NhanVien(
-    Id UNIQUEIDENTIFIER primary key DEFAULT newid(),
-    Ma VARCHAR(20) UNIQUE,
-    HoTen NVARCHAR(100) DEFAULT null,
-    GioiTinh NVARCHAR(20) DEFAULT null,
-    Email NVARCHAR(100) DEFAULT null,
-    NgaySinh date DEFAULT null,
-    DiaChi NVARCHAR(100) DEFAULT null,
-    Sdt VARCHAR(100) DEFAULT null,
-    IdGiaoCa UNIQUEIDENTIFIER,
-    TrangThai int DEFAULT 0
+CREATE TABLE staff(
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT newid(),
+    id_staff VARCHAR(20) NOT NULL,
+    full_name NVARCHAR(100) NOT NULL,
+    gender NVARCHAR(20) NOT NULL,
+    emai NVARCHAR(100) NOT NULL,
+    birth date NOT NULL,
+    _address NVARCHAR(100) NOT NULL,
+    phone_number VARCHAR(100) NOT NULL,
+    -- IdGiaoCa UNIQUEIDENTIFIER,
+    _state int NOT NULL
+)
+
+CREATE TABLE Promotion (
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    ten NVARCHAR(1000),
+    state_date DATE NOT NULL,
+    end_date DATE NOT NULL
+)
+
+CREATE TABLE PromotionDetail (
+    Promotion UNIQUEIDENTIFIER NOT NULL,
+    product_detail UNIQUEIDENTIFIER NOT NULL
 )
 
 -- Mối Quan Hệ Giữa Các Bảng
 -- Nhân Viên - Giao Ca
-ALTER table NhanVien Add FOREIGN key (IDGiaoCa) REFERENCES NhanVien(Id)
+-- ALTER table staff Add FOREIGN key (IDGiaoCa) REFERENCES NhanVien(Id)
 
 -- Hoá Đơn - Khách Hàng
-ALTER TABLE HoaDon add FOREIGN KEY (IdKh) REFERENCES KhachHang(Id)
+ALTER TABLE Invoice add FOREIGN KEY (customer) REFERENCES Customer(id)
 
 -- Hoá Đơn - Nhân Viên
-ALTER TABLE HoaDon add FOREIGN KEY (IdNv) REFERENCES NhanVien(Id)
+ALTER TABLE Invoice add FOREIGN KEY (staff) REFERENCES Staff(id)
 
 -- Chi Tiết Sản Phẩm - Sản Phẩm 
-ALTER TABLE ChiTietSanPham add FOREIGN KEY (IdSP) REFERENCES SanPham(Id)
+ALTER TABLE ProductDetail add FOREIGN KEY (product) REFERENCES Product(id)
 
 -- Chi Tiết Sản Phẩm - NSX (Hãng)
-ALTER TABLE ChiTietSanPham add FOREIGN KEY (IdNSX) REFERENCES NSX(Id)
+ALTER TABLE ProductDetail add FOREIGN KEY (producer) REFERENCES producer(Id)
 
 --Chi tiết Sản Phẩm - Màu Sắc
-ALTER TABLE ChiTietSanPham add FOREIGN KEY (IdMauSac) REFERENCES MauSac(Id)
+ALTER TABLE ProductDetail add FOREIGN KEY (color) REFERENCES Color(Id)
 
 --Chi tiết Sản Phẩm - Dòng SP
-ALTER TABLE ChiTietSanPham add FOREIGN KEY (IdDongSP) REFERENCES DongSP(Id)
+ALTER TABLE ProductDetail add FOREIGN KEY (product_line) REFERENCES ProductLine(Id)
+
+ALTER TABLE PromotionDetail ADD FOREIGN KEY (product_detail) REFERENCES ProductDetail(id)
