@@ -123,12 +123,13 @@ CREATE TABLE staff(
 
 CREATE TABLE Promotion (
     id UNIQUEIDENTIFIER PRIMARY KEY,
-    ten NVARCHAR(1000),
+    _name NVARCHAR(1000),
     state_date DATE NOT NULL,
     end_date DATE NOT NULL
 )
 
 CREATE TABLE PromotionDetail (
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     Promotion UNIQUEIDENTIFIER NOT NULL,
     product_detail UNIQUEIDENTIFIER NOT NULL
 )
@@ -155,4 +156,7 @@ ALTER TABLE ProductDetail add FOREIGN KEY (color) REFERENCES Color(Id)
 --Chi tiết Sản Phẩm - Dòng SP
 ALTER TABLE ProductDetail add FOREIGN KEY (product_line) REFERENCES ProductLine(Id)
 
+-- promotion
 ALTER TABLE PromotionDetail ADD FOREIGN KEY (product_detail) REFERENCES ProductDetail(id)
+
+ALTER TABLE PromotionDetail ADD FOREIGN KEY (promotion) REFERENCES Promotion(id)
