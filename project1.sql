@@ -116,6 +116,7 @@ CREATE TABLE staff(
     emai NVARCHAR(100) NOT NULL,
     birth date NOT NULL,
     _address NVARCHAR(100) NOT NULL,
+    _password VARCHAR(100) NOT NULL,
     phone_number VARCHAR(100) NOT NULL,
     -- IdGiaoCa UNIQUEIDENTIFIER,
     _state int NOT NULL
