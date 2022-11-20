@@ -56,12 +56,13 @@ CREATE TABLE Invoice(
     -- invoice varchar(20) UNIQUE,
     created_date date NOT NULL,
     payment_date date NOT NULL,
-    delivery_date date NOT NULL,
+    -- delivery_date date NOT NULL,
     received_date date NOT NULL,
     _state int NOT NULL,
-    recipiment_name NVARCHAR(100) NOT NULL,
-    _address NVARCHAR(100) NOT NULL,
-    phone_number NVARCHAR(100) NOT NULL,
+    payment_method INT NOT NULL
+    -- recipiment_name NVARCHAR(100) NOT NULL,
+    -- _address NVARCHAR(100) NOT NULL,
+    -- phone_number NVARCHAR(100) NOT NULL,
 )
 
 -- Hoá Đơn Chi tiêt
@@ -70,7 +71,7 @@ CREATE TABLE InvoiceDetail(
     invoice UNIQUEIDENTIFIER NOT NULL,
     product_detail UNIQUEIDENTIFIER NOT NULL,
     quantity int NOT NULL,
-    -- CONSTRAINT PK_HoaDonCT primary key (IdHoaDon, IdChiTietSanPham),
+    CONSTRAINT PK_HoaDonCT primary key (IdHoaDon, IdChiTietSanPham),
     CONSTRAINT FK1 FOREIGN key (invoice) REFERENCES Invoice(id),
     CONSTRAINT FK2 FOREIGN KEY (product_detail) REFERENCES ProductDetail(id),
 )
@@ -102,6 +103,7 @@ CREATE TABLE Customer(
     id_customer VARCHAR(20) UNIQUE,
     full_name NVARCHAR(100) DEFAULT null,
     email NVARCHAR(100) DEFAULT null,
+    gender BIT NOT NULL,
     phone_number VARCHAR(100) DEFAULT null,
     _address NVARCHAR(100) DEFAULT null,
     country NVARCHAR(100) DEFAULT null,
@@ -126,7 +128,10 @@ CREATE TABLE Promotion (
     id UNIQUEIDENTIFIER PRIMARY KEY,
     _name NVARCHAR(1000),
     state_date DATE NOT NULL,
-    end_date DATE NOT NULL
+    end_date DATE NOT NULL,
+    _percent INT NOT NULL,
+    _money BIGINT NOT NULL,
+    _type BIT NOT NULL
 )
 
 CREATE TABLE PromotionDetail (
@@ -161,3 +166,8 @@ ALTER TABLE ProductDetail add FOREIGN KEY (product_line) REFERENCES ProductLine(
 ALTER TABLE PromotionDetail ADD FOREIGN KEY (product_detail) REFERENCES ProductDetail(id)
 
 ALTER TABLE PromotionDetail ADD FOREIGN KEY (promotion) REFERENCES Promotion(id)
+
+
+-- SELECT * from Product
+-- go
+-- delete productdetail
