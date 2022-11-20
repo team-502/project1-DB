@@ -67,11 +67,15 @@ CREATE TABLE Invoice(
 
 -- Hoá Đơn Chi tiêt
 CREATE TABLE InvoiceDetail(
-    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    invoice UNIQUEIDENTIFIER NOT NULL,
-    product_detail UNIQUEIDENTIFIER NOT NULL,
+    -- id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    invoice UNIQUEIDENTIFIER,
+    product_detail UNIQUEIDENTIFIER,
     quantity int NOT NULL,
+<<<<<<< HEAD
     CONSTRAINT PK_HoaDonCT primary key (IdHoaDon, IdChiTietSanPham),
+=======
+    CONSTRAINT PK_Invoice_Detail primary key (invoice, product_detail),
+>>>>>>> TR
     CONSTRAINT FK1 FOREIGN key (invoice) REFERENCES Invoice(id),
     CONSTRAINT FK2 FOREIGN KEY (product_detail) REFERENCES ProductDetail(id),
 )
@@ -79,7 +83,7 @@ CREATE TABLE InvoiceDetail(
 -- Giỏ Hàng
 -- CREATE TABLE GioHang(
 --     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
---     IdKH UNIQUEIDENTIFIER,
+--     IdKH UNIQUEIDENTIFIER,cd
 --     IdNV UNIQUEIDENTIFIER,
 --     Ma VARCHAR(20) UNIQUE,
 --     NgayTao DATE DEFAULT NULL,
