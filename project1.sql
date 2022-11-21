@@ -1,3 +1,4 @@
+use master
 CREATE database PhanMem_BanGiay_Limited
 GO
 use PhanMem_BanGiay_Limited
@@ -53,7 +54,7 @@ CREATE TABLE Invoice(
     id UNIQUEIDENTIFIER primary key DEFAULT newid(),
     customer UNIQUEIDENTIFIER NOT NULL,
     staff UNIQUEIDENTIFIER NOT NULL,
-    -- invoice varchar(20) UNIQUE,
+    id_invoice varchar(20) UNIQUE,
     created_date date NOT NULL,
     payment_date date NOT NULL,
     -- delivery_date date NOT NULL,
@@ -67,11 +68,11 @@ CREATE TABLE Invoice(
 
 -- Hoá Đơn Chi tiêt
 CREATE TABLE InvoiceDetail(
-    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    invoice UNIQUEIDENTIFIER NOT NULL,
-    product_detail UNIQUEIDENTIFIER NOT NULL,
+    -- id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    invoice UNIQUEIDENTIFIER,
+    product_detail UNIQUEIDENTIFIER,
     quantity int NOT NULL,
-    CONSTRAINT PK_HoaDonCT primary key (IdHoaDon, IdChiTietSanPham),
+    CONSTRAINT PK_HoaDonCT primary key (invoice, Product_Detail),
     CONSTRAINT FK1 FOREIGN key (invoice) REFERENCES Invoice(id),
     CONSTRAINT FK2 FOREIGN KEY (product_detail) REFERENCES ProductDetail(id),
 )
@@ -79,7 +80,7 @@ CREATE TABLE InvoiceDetail(
 -- Giỏ Hàng
 -- CREATE TABLE GioHang(
 --     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
---     IdKH UNIQUEIDENTIFIER,
+--     IdKH UNIQUEIDENTIFIER,cd
 --     IdNV UNIQUEIDENTIFIER,
 --     Ma VARCHAR(20) UNIQUE,
 --     NgayTao DATE DEFAULT NULL,
@@ -107,6 +108,7 @@ CREATE TABLE Customer(
     phone_number VARCHAR(100) DEFAULT null,
     _address NVARCHAR(100) DEFAULT null,
     country NVARCHAR(100) DEFAULT null,
+    _state BIT NOT NULL
 )
 
 -- Nhân Viên 
@@ -114,7 +116,7 @@ CREATE TABLE staff(
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT newid(),
     id_staff VARCHAR(20) NOT NULL,
     full_name NVARCHAR(100) NOT NULL,
-    gender NVARCHAR(20) NOT NULL,
+    gender BIT NOT NULL,
     emai NVARCHAR(100) NOT NULL,
     birth date NOT NULL,
     _address NVARCHAR(100) NOT NULL,
@@ -167,6 +169,7 @@ ALTER TABLE PromotionDetail ADD FOREIGN KEY (product_detail) REFERENCES ProductD
 
 ALTER TABLE PromotionDetail ADD FOREIGN KEY (promotion) REFERENCES Promotion(id)
 
+select * from ProductLine
 
 -- SELECT * from Product
 -- go
