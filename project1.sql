@@ -72,7 +72,8 @@ CREATE TABLE InvoiceDetail(
     invoice UNIQUEIDENTIFIER,
     product_detail UNIQUEIDENTIFIER,
     quantity int NOT NULL,
-    CONSTRAINT PK_HoaDonCT primary key (invoice, Product_Detail),
+    CONSTRAINT PK_Invoice_Detail primary key (invoice, product_detail),
+
     CONSTRAINT FK1 FOREIGN key (invoice) REFERENCES Invoice(id),
     CONSTRAINT FK2 FOREIGN KEY (product_detail) REFERENCES ProductDetail(id),
 )
